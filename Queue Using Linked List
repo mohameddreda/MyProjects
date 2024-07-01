@@ -1,0 +1,86 @@
+#include <iostream>
+
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* next;
+
+    Node(int data) {
+        this->data = data;
+        this->next = nullptr;
+    }
+};
+
+class Queue {
+private:
+    Node* fronts;
+    Node* rear;
+
+public:
+    Queue() {
+        fronts = nullptr;
+        rear = nullptr;
+    }
+
+    ~Queue() {
+        while (!isEmpty()) {
+            dequeue();
+        }
+    }
+
+    void enqueue(int data) {
+        Node* newNode = new Node(data);
+        if (isEmpty()) {
+            fronts = newNode;
+            rear = newNode;
+        } else {
+            rear->next = newNode;
+            rear = newNode;
+        }
+    }
+
+    int dequeue() {
+        if (isEmpty()) {
+            cout << "Queue is empty!" << endl;
+            return -1;
+        }
+        int dequeuedData = fronts->data;
+        Node* temp = fronts;
+        fronts = fronts->next;
+        if (fronts == nullptr) {
+            rear = nullptr;
+        }
+        delete temp;
+        return dequeuedData;
+    }
+
+    int peek() {
+        if (isEmpty()) {
+            cout << "Queue is empty!" << endl;
+            return -1;
+        }
+        return fronts->data;
+    }
+
+    bool isEmpty() {
+        return fronts == nullptr;
+    }
+};
+
+int main() {
+    Queue myQueue;
+
+    myQueue.enqueue(1);
+    myQueue.enqueue(2);
+    myQueue.enqueue(3);
+
+    cout << "Front element: " << myQueue.peek() << endl;
+
+    cout << "Dequeued element: " << myQueue.dequeue() << endl;
+
+    cout << "Front element after dequeue: " << myQueue.peek() << endl;
+
+    return 0;
+}
