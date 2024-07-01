@@ -1,0 +1,107 @@
+#include<iostream>
+using namespace std;
+
+class Node{
+    public:
+    int data;
+    Node* next;
+
+    Node(int data){
+        this->data = data;
+        next = nullptr;
+    }
+};
+
+class Linkedlist{
+    private:
+    Node * head;
+    Node* tail;
+    int size;
+    public:
+    Linkedlist(){
+        head = tail = nullptr;
+        size = 0;
+    }
+    bool isEmpty(){
+        return head == nullptr;
+    }
+    void insertfirst(int value){
+        Node* newnode = new Node(value);
+        if(isEmpty()){
+            head = newnode;
+            tail = newnode;
+        } else {
+            newnode->next = head;
+            head = newnode;
+            tail->next = head; 
+        }
+        size++;
+    }
+
+    void insertlast(int value){
+        Node* newnode = new Node(value);
+        if(isEmpty()){
+            head = newnode;
+            tail = newnode;
+        } else {
+            tail->next = newnode;
+            tail = newnode;
+            tail->next = head;
+        }
+        size++;
+    }
+
+    void deletefirst(){
+        if(isEmpty()){
+            cout << "list is empty\n";
+        } else {
+            Node* temp = head;
+            head = head->next;
+            delete [] temp;
+            tail->next = head;
+            size--;
+        }
+    }
+
+    void deletelast(){
+        if(isEmpty()){
+            cout << "list is empty\n";
+        } else {
+            Node* ptr = head;
+            int count = 1;
+            while(count < size - 1){
+                ptr = ptr->next;
+                count++;
+            }
+            delete [] tail;
+            tail = ptr;
+            tail->next = head;
+            size--;
+        }
+    }
+
+    void display(){
+        Node* ptr = head;
+        int count = 0;
+        while(count < size){
+            cout << ptr->data << " ";
+            ptr = ptr->next;
+            count++;
+        }
+        cout << "\n";
+    }
+};
+
+int main(){
+    Linkedlist list;
+    list.insertfirst(30);
+    list.insertfirst(70);
+    list.insertfirst(10);
+    list.display();
+    list.insertlast(20);
+    list.display();
+    list.deletefirst();
+    list.display();
+    list.deletelast();
+    list.display();
+}
