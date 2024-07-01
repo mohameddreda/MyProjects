@@ -1,0 +1,135 @@
+#include <iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node* prev;
+    Node* next;
+
+    Node(int data) {
+        this->data = data;
+        this->prev = nullptr;
+        this->next = nullptr;
+    }
+};
+
+class Deque {
+private:
+    Node* front;
+    Node* rear;
+
+public:
+    Deque() {
+        front = nullptr;
+        rear = nullptr;
+    }
+
+    ~Deque() {
+        while (!isEmpty()) {
+            deleteFront();
+        }
+    }
+
+    void insertFront(int data) {
+        Node* newNode = new Node(data);
+        if (isEmpty()) {
+            front = newNode;
+            rear = newNode;
+        }
+        else {
+            newNode->next = front;
+            front->prev = newNode;
+            front = newNode;
+        }
+    }
+
+    void insertRear(int data) {
+        Node* newNode = new Node(data);
+        if (isEmpty()) {
+            front = newNode;
+            rear = newNode;
+        }
+        else {
+            rear->next = newNode;
+            newNode->prev = rear;
+            rear = newNode;
+        }
+    }
+
+    int deleteFront() {
+        if (isEmpty()) {
+            cout << "Deque is empty!" << endl;
+            return -1;
+        }
+        int deletedData = front->data;
+        Node* temp = front;
+        if (front == rear) {
+            front = nullptr;
+            rear = nullptr;
+        }
+        else {
+            front = front->next;
+            front->prev = nullptr;
+        }
+        delete temp;
+        return deletedData;
+    }
+
+    int deleteRear() {
+        if (isEmpty()) {
+            cout << "Deque is empty!" << endl;
+            return -1;
+        }
+        int deletedData = rear->data;
+        Node* temp = rear;
+        if (front == rear) {
+            front = nullptr;
+            rear = nullptr;
+        }
+        else {
+            rear = rear->prev;
+            rear->next = nullptr;
+        }
+        delete temp;
+        return deletedData;
+    }
+
+    int getFront() {
+        if (isEmpty()) {
+            cout << "Deque is empty!" << endl;
+            return -1;
+        }
+        return front->data;
+    }
+
+    int getRear() {
+        if (isEmpty()) {
+            cout << "Deque is empty!" << endl;
+            return -1;
+        }
+        return rear->data;
+    }
+
+    bool isEmpty() {
+        return front == nullptr;
+    }
+};
+
+int main() {
+    Deque myDeque;
+
+    myDeque.insertFront(1);
+    myDeque.insertRear(2);
+    myDeque.insertFront(3);
+    myDeque.insertRear(4);
+
+    cout << "Front element: " << myDeque.getFront() << endl;
+    cout << "Rear element: " << myDeque.getRear() << endl;
+
+    cout << "Deleted front element: " << myDeque.deleteFront() << endl;
+
+    cout << "Front element after delete: " << myDeque.getFront() << endl;
+
+    return 0;
+}
