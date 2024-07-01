@@ -1,0 +1,179 @@
+class Item:
+    def __init__(self, title, author, price):
+        self._title = title
+        self._author = author
+        self._price = price
+
+    @property
+    def title(self):
+        return self._title
+
+    @property
+    def author(self):
+        return self._author
+
+    @property
+    def price(self):
+        return self._price
+
+    def get_info(self):
+        return f"The Title Is: {self.title}, The Author Is: {self.author}, The Price Is: {self.price}"
+
+    def update_details(self, title=None, author=None, price=None):
+        if title:
+            self._title = title
+        if author:
+            self._author = author
+        if price:
+            self._price = price
+
+    @staticmethod
+    def search(items, criteria, keyword):
+        #Search for items based on specific criteria.
+        results = []
+        for item in items:
+            if getattr(item, criteria).lower() == keyword.lower():
+                results.append(item)
+        return results
+
+class Book(Item):
+    def __init__(self, title, author, price, isbn, genre, num_pages):
+        super().__init__(title, author, price)
+        self._isbn = isbn
+        self._genre = genre
+        self._num_pages = num_pages
+
+    @property
+    def isbn(self):
+        return self._isbn
+
+    @property
+    def genre(self):
+        return self._genre
+
+    @property
+    def num_pages(self):
+        return self._num_pages
+
+    def get_info(self):
+        item_info = super().get_info()
+        return f"{item_info}, The ISBN Is: {self.isbn}, The Genre Is: {self.genre}, The Number of Pages Is: {self.num_pages}"
+
+class Magazine(Item):
+    def __init__(self, title, author, price, issue_number, publication_date, editor):
+        super().__init__(title, author, price)
+        self._issue_number = issue_number
+        self._publication_date = publication_date
+        self._editor = editor
+
+    @property
+    def issue_number(self):
+        return self._issue_number
+
+    @property
+    def publication_date(self):
+        return self._publication_date
+
+    @property
+    def editor(self):
+        return self._editor
+
+    def get_info(self):
+        item_info = super().get_info()
+        return f"{item_info}, The Issue Number Is: {self.issue_number}, The Publication Date Is: {self.publication_date}, The Editor Is: {self.editor}"
+
+class DVD(Item):
+    def __init__(self, title, author, price, director, duration, genre):
+        super().__init__(title, author, price)
+        self._director = director
+        self._duration = duration
+        self._genre = genre
+
+    @property
+    def director(self):
+        return self._director
+
+    @property
+    def duration(self):
+        return self._duration
+
+    @property
+    def genre(self):
+        return self._genre
+
+    def get_info(self):
+        item_info = super().get_info()
+        return f"{item_info}, The Director Is: {self.director}, The Duration Is: {self.duration}, The Genre Is: {self.genre}"
+
+class Inventory:
+    def __init__(self):
+        self.items = []
+
+    def add_item(self, item):
+        #Add a new item to the inventory.
+        self.items.append(item)
+
+    def calculate_total_sales(self):
+        #Calculate the total sales from all items in the inventory.
+        total_sales = sum(item.price for item in self.items)
+        return total_sales
+class Order:
+    def __init__(self, customer_name, items):
+        self.customer_name = customer_name
+        self.items = items
+
+    def add_item(self, item):
+        #Add an item to the order.
+        self.items.append(item)
+
+    def remove_item(self, item):
+        #Remove an item from the order.
+        self.items.remove(item)
+
+
+# Create instances of Book, Magazine, and DVD
+book1 = Book("Algorithms Unlocked", "Thomas H. Cormen", 29.99, "978-0262518802", "Computer Science / Algorithms", 240)
+magazine1 = Magazine("CodeCrafters Monthly", "Various", 9.99, 24, "May 2024", "Samantha Smith")
+dvd1 = DVD("Code Chronicles: The Legacy of Bytes", "Alan Scripter", 19.99, "Java Maven", "120 minutes", "Educational Tech")
+book2 = Book(" Math2"," serway ",80.00,"978-0262518802","Computer Science / Algorithms", 160)
+
+# Print info for each item
+print(book1.get_info())
+print(magazine1.get_info())
+print(dvd1.get_info())
+print(book2.get_info())
+# Create an inventory
+inventory = Inventory()
+
+# Add items to the inventory
+inventory.add_item(book1)
+inventory.add_item(magazine1)
+inventory.add_item(dvd1)
+inventory.add_item(book2)
+# Search for items by author
+author_search_results = Item.search(inventory.items, 'author', 'serway')
+for item in author_search_results:
+    print(item.get_info())
+
+# Create a customer order
+order1 = Order(" MOO -_- ", [book1, dvd1])
+
+# Add more items to the order
+order1.add_item(magazine1)
+order1.add_item((book2))
+# Remove an item from the order
+order1.remove_item(dvd1)
+
+# Print order details
+print(f"Customer Name: {order1.customer_name}")
+print("Ordered Items:")
+for item in order1.items:
+    print(item.get_info())
+
+# Calculate total sales
+total_sales = inventory.calculate_total_sales()
+print("Total Sales:", total_sales)
+
+# Update item details
+book1.update_details(price=39.99)
+print(book1.get_info())
